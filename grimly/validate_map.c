@@ -6,7 +6,7 @@
 /*   By: scamargo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/17 17:34:27 by scamargo          #+#    #+#             */
-/*   Updated: 2018/01/17 22:31:14 by scamargo         ###   ########.fr       */
+/*   Updated: 2018/01/18 15:10:09 by scamargo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,36 +30,7 @@ static int	no_repeat_symbols(t_grim *map)
 	return (1);
 }
 
-static char	*get_header(int file_descriptor)
-{
-	t_array	*buff;
-	char	in_buff[30];
-	int		reader;
-	char	*result;
-
-	if (!(buff = arr_init(30)))
-		return (0);
-	while ((reader = read(file_descriptor, in_buff, 29)))
-	{
-		if (reader == -1)
-			return (0);
-		in_buff[reader] = '\0';
-		reader = 0;
-		while (in_buff[reader])
-		{
-			if (in_buff[reader] == '\n')
-			{
-				result = buff->str;
-				free(buff);
-				return (result);
-			}
-			arr_insert(buff, in_buff[reader++]);
-		}
-	}
-	return (0);
-}
-
-static int	parse_header_symbols(t_grim *map, char *header)
+static int	parse_header_symbols(char *header, t_grim *map) //technically you want to check that you have printable characters
 {
 	if ((map->lines = ft_atoi(header)) <= 0)
 		return (0);
@@ -81,36 +52,52 @@ static int	parse_header_symbols(t_grim *map, char *header)
 		return (0);
 	if (!(map->exit = *header++))
 		return (0);
-	if (*header != '\0')
+	if (*header != '\n')
 		return (0);
 	return (1);
 }
 
-static int	header_is_valid(int file_descriptor, t_grim *map)
+static char	*read_file(int file_descriptor)
 {
-	char	*header;
+	t_array	*buff;
+	char	in_buff[30];
+	int		reader;
+	char	*result;
 
-	if (!(header = get_header(file_descriptor)))
+	if (!(buff = arr_init(30)))
 		return (0);
-	if (!parse_header_symbols(map, header))
+	while ((reader = read(file_descriptor, in_buff, 29)))
 	{
-		free(header);
-		return (0);
+		if (reader == -1)
+			return (0);
+		in_buff[reader] = '\0';
+		reader = 0;
+		while (in_buff[reader])
+			arr_insert(buff, in_buff[reader++]);
 	}
-	free(header);
-	if (!no_repeat_symbols(map))
-		return (0);
-	return (1);
+	result = buff->str;
+	free(buff);
+	return (result);
 }
 
 int			map_is_valid(char *file_name, t_grim *map)
 {
+	char	*input;
 	int fd;
 
 	if ((fd = open(file_name, O_RDONLY)) == -1)
 		return (0);
-	if (!(header_is_valid(fd, map)))
+	if (!(input = read_file(fd)))
+	{	
+		close(fd);
 		return (0);
+	}
 	close(fd);
+	if (!parse_header_symbols(input, map))
+		return (0);
+	if (!no_repeat_symbols(map))
+		return (0);
+	//if (!(card_is_valid(fd, map)))
+	//close(fd);
 	return (1);
 }
