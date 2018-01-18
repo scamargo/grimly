@@ -6,7 +6,7 @@
 /*   By: scamargo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/17 17:34:27 by scamargo          #+#    #+#             */
-/*   Updated: 2018/01/17 22:24:19 by scamargo         ###   ########.fr       */
+/*   Updated: 2018/01/17 22:31:14 by scamargo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static int	parse_header_symbols(t_grim *map, char *header)
 	if ((map->lines = ft_atoi(header)) <= 0)
 		return (0);
 	while (*header && *header++ != 'x')
-	t 	header++;
+	 	header++;
 	if ((map->columns = ft_atoi(header++)) <= 0)
 		return (0);
 	if ((map->lines * map->columns) > 1000000000)
