@@ -6,14 +6,14 @@
 /*   By: scamargo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/17 17:31:50 by scamargo          #+#    #+#             */
-/*   Updated: 2018/01/17 19:40:47 by scamargo         ###   ########.fr       */
+/*   Updated: 2018/01/17 20:57:50 by scamargo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GRIMLY_H
-#define GRIMLY_H
+# define GRIMLY_H
 
-typedef struct s_grim
+typedef struct	s_grim
 {
 	int		lines;
 	int		columns;

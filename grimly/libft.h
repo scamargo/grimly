@@ -6,7 +6,7 @@
 /*   By: scamargo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/01 12:56:43 by scamargo          #+#    #+#             */
-/*   Updated: 2018/01/17 16:22:22 by scamargo         ###   ########.fr       */
+/*   Updated: 2018/01/17 20:56:47 by scamargo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,5 @@ void			arr_insert(t_array *arr, char c);
 t_array			*arr_init(int initial_size);
 char			*ft_itoa_base(int nbr, int base);
 char			*ft_stdin(void);
-
 
 #endif

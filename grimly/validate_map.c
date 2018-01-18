@@ -6,13 +6,28 @@
 /*   By: scamargo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/17 17:34:27 by scamargo          #+#    #+#             */
-/*   Updated: 2018/01/17 20:08:41 by scamargo         ###   ########.fr       */
+/*   Updated: 2018/01/17 21:00:27 by scamargo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "grimly.h"
 #include <stdio.h>
+
+static int	no_repeat_symbols(t_grim *map)
+{
+	if (map->full == map->empty || map->full == map->path ||
+		map->full == map->entrance || map->full == map->exit)
+		return (0);
+	if (map->empty == map->path || map->empty == map->entrance ||
+		map->empty == map->exit)
+		return (0);
+	if (map->path == map->entrance || map->path == map->exit)
+		return (0);
+	if (map->entrance == map->exit)
+		return (0);
+	return (1);
+}
 
 static int	header_is_valid(char *file_name, t_grim *map)
 {
@@ -23,7 +38,7 @@ static int	header_is_valid(char *file_name, t_grim *map)
 	ft_putendl(file_name);
 	//file_descriptor = open(READ_ONLY);
 	//header = get_next_line(file_descriptor);
-	header = "10x10* o12";
+	header = "31000x31000* o12";
 	if ((map->lines = ft_atoi(header)) <= 0)
 		return (0);
 	while (*header++ != 'x')
@@ -33,8 +48,11 @@ static int	header_is_valid(char *file_name, t_grim *map)
 	}
 	if ((map->columns = ft_atoi(header++)) <= 0)
 		return (0);
+	if ((map->lines * map->columns) > 1000000000)
+		return (0);
 	while (*header >= '0' && *header <= '9')
 		header++;
+	printf("lines: %d, col: %d\n", map->lines, map->columns);
 	if (!(map->full = *header++))
 		return (0);
 	if (!(map->empty = *header++))
@@ -47,15 +65,13 @@ static int	header_is_valid(char *file_name, t_grim *map)
 		return (0);
 	if (*header != '\0')
 		return (0);
-	// TODO: make sure no values are repeated
+	if (!no_repeat_symbols(map))
+		return (0);
 	return (1);
 }
 
-
-
-int		map_is_valid(char *file_name, t_grim *map)
+int			map_is_valid(char *file_name, t_grim *map)
 {
-	//read file
 	if (!(header_is_valid(file_name, map)))
 		return (0);
 	return (1);
