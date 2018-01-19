@@ -6,14 +6,14 @@
 /*   By: scamargo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 14:14:39 by scamargo          #+#    #+#             */
-/*   Updated: 2018/01/18 18:52:55 by scamargo         ###   ########.fr       */
+/*   Updated: 2018/01/19 10:02:41 by scamargo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "grimly.h"
 #include "libft.h"
 
-static int	is_valid_char(char c, t_grim *map, int x, int y, int *p_entries, int *p_exits)
+static int	is_valid_char(char c, t_grim *map, int x, int y, int *p_en, int *p_ex)
 {
 	if (c == map->full)
 		return (1);
@@ -23,48 +23,56 @@ static int	is_valid_char(char c, t_grim *map, int x, int y, int *p_entries, int 
 	{
 		map->entrance_pos[0] = x;
 		map->entrance_pos[1] = y;
-		if (++(*p_entries) > 1)
+		if (++(*p_en) > 1)
 			return (0);
 		return (1);
 	}
 	if (c == map->exit)
 	{
-		++(*p_exits);
+		++(*p_ex);
 		return (1);
 	}
 	return (0);
 }
 
-int	card_is_valid(char *input, t_grim *map)
+static int	card_meets_reqs(int en, int ex, int li, t_grim *map)
+{
+	if (li != map->lines)
+		return (0);
+	if (en < 1)
+		return (0);
+	if (ex < 1)
+		return (0);
+	return (1);
+}
+
+int			card_is_valid(char *input, t_grim *map)
 {
 	int lines;
 	int columns;
-	int i;
 	int entries;
 	int exits;
 
 	while (*input++ != '\n')
 		;
-	i = 0;
 	lines = 0;
 	entries = 0;
 	exits = 0;
-	while (input[i])
+	while (*input)
 	{
 		columns = 0;
-		while (input[i] && input[i] != '\n')
+		while (*input && *input != '\n')
 		{
-			if (!is_valid_char(input[i], map, columns, lines, &entries, &exits))
+			if (!is_valid_char(*input++, map, columns, lines, &entries, &exits))
 				return (0);
 			columns++;
-			i++;
 		}
 		if (columns != map->columns)
 			return (0);
 		lines++;
-		i++;
+		input++;
 	}
-	if (lines != map->lines || entries < 1 || exits < 1)
+	if (!card_meets_reqs(entries, exits, lines, map))
 		return (0);
 	return (1);
 }
