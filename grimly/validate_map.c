@@ -6,7 +6,7 @@
 /*   By: scamargo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/17 17:34:27 by scamargo          #+#    #+#             */
-/*   Updated: 2018/01/18 15:10:09 by scamargo         ###   ########.fr       */
+/*   Updated: 2018/01/18 15:35:44 by scamargo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int			map_is_valid(char *file_name, t_grim *map)
 		return (0);
 	if (!no_repeat_symbols(map))
 		return (0);
-	//if (!(card_is_valid(fd, map)))
-	//close(fd);
+	if (!(card_is_valid(input, map)))
+		return (0);
 	return (1);
 }

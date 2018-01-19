@@ -6,7 +6,7 @@
 /*   By: scamargo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/17 17:31:50 by scamargo          #+#    #+#             */
-/*   Updated: 2018/01/18 14:14:24 by scamargo         ###   ########.fr       */
+/*   Updated: 2018/01/18 15:32:35 by scamargo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,6 @@ typedef struct	s_grim
 }				t_grim;
 
 int				map_is_valid(char *input_file, t_grim *map);
-int				card_is_valid(int fd, t_grim *map);
+int				card_is_valid(char *input, t_grim *map);
 
 #endif
