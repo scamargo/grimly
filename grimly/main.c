@@ -6,7 +6,7 @@
 /*   By: scamargo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/17 15:30:32 by scamargo          #+#    #+#             */
-/*   Updated: 2018/01/19 16:19:02 by scamargo         ###   ########.fr       */
+/*   Updated: 2018/01/19 16:43:31 by scamargo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 static void	grim_it(char *file_name)
 {
 	t_grim *card;
+	int		steps;
 
 	if (!(card = (t_grim*)ft_memalloc(sizeof(t_grim))))
 		return ;
@@ -25,7 +26,14 @@ static void	grim_it(char *file_name)
 		write(2, "MAP ERROR\n", 10);
 		return ;
 	}
-	find_path(card);	
+	if ((steps = find_path(card)))
+	{
+		ft_putstr("RESULT IN ");
+		ft_putnbr(steps);
+		ft_putendl(" STEPS!");
+	}
+	else
+		ft_putendl("didn't find an exit -- you fuckup up severely");
 }
 
 int			main(int ac, char **av)

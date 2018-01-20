@@ -6,7 +6,7 @@
 /*   By: scamargo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 13:43:43 by scamargo          #+#    #+#             */
-/*   Updated: 2018/01/19 16:18:05 by scamargo         ###   ########.fr       */
+/*   Updated: 2018/01/19 16:42:16 by scamargo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,28 +42,35 @@ static void	find_children(char *map, int i, t_grim *card, t_list *queue)
 	// look left
 }
 
-void	find_path(t_grim *card)
+int		find_path(t_grim *card)
 {
 	t_list *queue; // arraylist may be better
 	char	*map;
 	int		i;
+	int		steps;
 	i = card->entrance_pos;// TODO: fix this!
 	queue = ft_lstnew(&i, sizeof(int));
 	map = ft_strdup(card->map);
 	while (!(map[i] & EXIT))
 	{
 		find_children(map, i, card, queue);
+		if (!queue->next)
+			return (0);
 		queue = queue->next;
 		i = *(int*)queue->content;
 	}
+	steps = 0;
 	// TODO: don't write over exit
 	while (map[i] != card->entrance)
 	{
-		card->map[i] = card->path;
-		if (map[i] & BOTTOM_PARENT)
+		if (!(map[i] & EXIT))
 		{
-			i += card->columns + 1;
+			steps++;
+			card->map[i] = card->path;
 		}
+		if (map[i] & BOTTOM_PARENT)
+			i += card->columns + 1;
 	}
 	ft_putstr(card->card);
+	return (steps);
 }
