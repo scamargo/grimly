@@ -6,7 +6,7 @@
 #    By: scamargo <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/17 15:20:51 by scamargo          #+#    #+#              #
-#    Updated: 2018/01/19 11:57:37 by scamargo         ###   ########.fr        #
+#    Updated: 2018/01/19 16:22:08 by scamargo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,10 @@ all:
 debug:
 	@gcc -o $(NAME) $(FLAGS) $(SRCS)
 
-fclean:
+clean:
+	@/bin/rm -f *.o
+
+fclean: clean
 	@/bin/rm -f grimly
 
 re: fclean all
