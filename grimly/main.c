@@ -6,7 +6,7 @@
 /*   By: scamargo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/17 15:30:32 by scamargo          #+#    #+#             */
-/*   Updated: 2018/01/19 16:43:31 by scamargo         ###   ########.fr       */
+/*   Updated: 2018/01/20 18:37:36 by scamargo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,10 @@ static void	grim_it(char *file_name)
 		ft_putendl(" STEPS!");
 	}
 	else
-		ft_putendl("didn't find an exit -- you fuckup up severely");
+	{
+		write(2, "MAP ERROR\n", 10);
+		return ;
+	}
 }
 
 int			main(int ac, char **av)
