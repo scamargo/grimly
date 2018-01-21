@@ -6,7 +6,7 @@
 /*   By: scamargo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 16:09:37 by scamargo          #+#    #+#             */
-/*   Updated: 2018/01/19 16:16:41 by scamargo         ###   ########.fr       */
+/*   Updated: 2018/01/20 21:44:24 by scamargo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int	parse_header_symbols(char *header, t_grim *card) //technically you wa
 	if ((card->lines = ft_atoi(header)) <= 0)
 		return (0);
 	while (*header && *header++ != 'x')
-	 	header++;
+	 	;
 	if ((card->columns = ft_atoi(header++)) <= 0)
 		return (0);
 	if ((card->lines * card->columns) > 1000000000)
@@ -80,24 +80,27 @@ static char	*read_file(int file_descriptor)
 	return (result);
 }
 
-int			card_is_valid(char *file_name, t_grim *card)
+int			card_is_valid(char *input_text, t_grim *card, int is_map)
 {
-	char	*input;
+	char	*card_text;
 	int fd;
 
-	if ((fd = open(file_name, O_RDONLY)) == -1)
+	if (is_map)
+		fd = 0;
+	else if ((fd = open(input_text, O_RDONLY)) == -1)
 		return (0);
-	if (!(input = read_file(fd)))
+	if (!(card_text = read_file(fd)))
 	{	
 		close(fd);
 		return (0);
 	}
 	close(fd);
-	if (!parse_header_symbols(input, card))
+	//ft_putendl(card_text);
+	if (!parse_header_symbols(card_text, card))
 		return (0);
 	if (!no_repeat_symbols(card))
 		return (0);
-	if (!(map_is_valid(input, card)))
+	if (!(map_is_valid(card_text, card)))
 		return (0);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: scamargo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/17 17:31:50 by scamargo          #+#    #+#             */
-/*   Updated: 2018/01/19 16:33:42 by scamargo         ###   ########.fr       */
+/*   Updated: 2018/01/20 21:20:48 by scamargo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ typedef struct	s_grim
 	//t_list	*exit_pos maybe I don't need this
 }				t_grim;
 
-int				card_is_valid(char *input_file, t_grim *card);
+int				card_is_valid(char *input_file, t_grim *card, int is_map);
 int				map_is_valid(char *input, t_grim *card);
 int				find_path(t_grim *card);
 
