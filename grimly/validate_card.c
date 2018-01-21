@@ -6,7 +6,7 @@
 /*   By: scamargo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 16:09:37 by scamargo          #+#    #+#             */
-/*   Updated: 2018/01/20 21:44:24 by scamargo         ###   ########.fr       */
+/*   Updated: 2018/01/20 22:18:28 by scamargo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "grimly.h"
 #include <fcntl.h>
 #include <stdio.h>
+#define BUFF_SIZE 4096
 
 static int	no_repeat_symbols(t_grim *card)
 {
@@ -60,13 +61,13 @@ static int	parse_header_symbols(char *header, t_grim *card) //technically you wa
 static char	*read_file(int file_descriptor)
 {
 	t_array	*buff;
-	char	in_buff[30];
+	char	in_buff[BUFF_SIZE];
 	int		reader;
 	char	*result;
 
-	if (!(buff = arr_init(30)))
+	if (!(buff = arr_init(BUFF_SIZE)))
 		return (0);
-	while ((reader = read(file_descriptor, in_buff, 29)))
+	while ((reader = read(file_descriptor, in_buff, BUFF_SIZE - 1)))
 	{
 		if (reader == -1)
 			return (0);
@@ -95,7 +96,6 @@ int			card_is_valid(char *input_text, t_grim *card, int is_map)
 		return (0);
 	}
 	close(fd);
-	//ft_putendl(card_text);
 	if (!parse_header_symbols(card_text, card))
 		return (0);
 	if (!no_repeat_symbols(card))
