@@ -6,19 +6,19 @@
 /*   By: scamargo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 13:43:43 by scamargo          #+#    #+#             */
-/*   Updated: 2018/01/20 17:59:41 by scamargo         ###   ########.fr       */
+/*   Updated: 2018/01/20 18:31:47 by scamargo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "grimly.h"
 
-#define BOTTOM_PARENT 0x00
-#define RIGHT_PARENT 0x01
-#define TOP_PARENT 0x02
-#define LEFT_PARENT 0x03
+#define BOTTOM_PARENT 0x01
+#define RIGHT_PARENT 0x02
+#define TOP_PARENT 0x03
+#define LEFT_PARENT 0x04
 #define EXIT 0x08
-#define GET_PARENT(c) (c & 0x03)
+#define GET_PARENT(c) (c & 0x07)
 
 static void	find_children(char *map, int i, t_grim *card, t_list *queue)
 {
@@ -32,6 +32,14 @@ static void	find_children(char *map, int i, t_grim *card, t_list *queue)
 	exit = card->exit;
 	columns = card->columns;
 	lines = card->lines;
+	child_i = i + columns + 1;
+	if (i < ((columns + 1) * (lines - 1)) && (map[child_i] == empty || map[child_i] == exit))
+	{
+		if (map[child_i] == exit)
+			map[child_i] = 0 | EXIT;
+		map[child_i] = map[child_i] | TOP_PARENT;
+		ft_lstaddtoend(&queue, ft_lstnew(&child_i, sizeof(int)));
+	}
 	child_i = i - columns - 1;
 	if (i > columns && (map[child_i] == empty || map[child_i] == exit))
 	{
@@ -48,14 +56,7 @@ static void	find_children(char *map, int i, t_grim *card, t_list *queue)
 		map[child_i] = map[child_i] | RIGHT_PARENT;
 		ft_lstaddtoend(&queue, ft_lstnew(&child_i, sizeof(int)));
 	}
-	child_i = i + columns + 1;
-	if (i < ((columns + 1) * (lines - 1)) && (map[child_i] == empty || map[child_i] == exit))
-	{
-		if (map[child_i] == exit)
-			map[child_i] = 0 | EXIT;
-		map[child_i] = map[child_i] | TOP_PARENT;
-		ft_lstaddtoend(&queue, ft_lstnew(&child_i, sizeof(int)));
-	}
+	
 	child_i = i + 1;
 	if (i < (columns + 1) * lines && (map[child_i] == empty || map[child_i] == exit))
 	{
