@@ -6,7 +6,7 @@
 /*   By: scamargo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 13:43:43 by scamargo          #+#    #+#             */
-/*   Updated: 2018/01/21 10:31:57 by scamargo         ###   ########.fr       */
+/*   Updated: 2018/01/21 10:54:34 by scamargo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,44 +27,36 @@ static void ft_putmap(t_grim *card)
 
 static void	find_children(char *map, int i, t_grim *card, t_list *queue)
 {
-	//char empty;
-	char exit;
-	int	 columns;
-	int		lines;
 	int		child_i;
 
-	//empty = card->empty;
-	exit = card->exit;
-	columns = card->columns;
-	lines = card->lines;
-	child_i = i - columns - 1;
-	if (i > columns && (map[child_i] == card->empty || map[child_i] == exit))
+	child_i = i - card->columns - 1;
+	if (i > card->columns && (map[child_i] == card->empty || map[child_i] == card->exit))
 	{
-		if (map[child_i] == exit)
+		if (map[child_i] == card->exit)
 			map[child_i] = 0 | EXIT;
 		map[child_i] = map[child_i] | BOTTOM_PARENT;
 		ft_lstaddtoend(&queue, ft_lstnew(&child_i, sizeof(int)));
 	}
 	child_i = i - 1;
-	if (i > 0 && (map[child_i] == card->empty || map[child_i] == exit))
+	if (i > 0 && (map[child_i] == card->empty || map[child_i] == card->exit))
 	{
-		if (map[child_i] == exit)
+		if (map[child_i] == card->exit)
 			map[child_i] = 0 | EXIT;
 		map[child_i] = map[child_i] | RIGHT_PARENT;
 		ft_lstaddtoend(&queue, ft_lstnew(&child_i, sizeof(int)));
 	}
 	child_i = i + 1;
-	if (i < (columns + 1) * lines && (map[child_i] == card->empty || map[child_i] == exit))
+	if (i < (card->columns + 1) * card->lines && (map[child_i] == card->empty || map[child_i] == card->exit))
 	{
-		if (map[child_i] == exit)
+		if (map[child_i] == card->exit)
 			map[child_i] = 0 | EXIT;
 		map[child_i] = map[child_i] | LEFT_PARENT;
 		ft_lstaddtoend(&queue, ft_lstnew(&child_i, sizeof(int)));
 	}
-	child_i = i + columns + 1;
-	if (i < ((columns + 1) * (lines - 1)) && (map[child_i] == card->empty || map[child_i] == exit))
+	child_i = i + card->columns + 1;
+	if (i < ((card->columns + 1) * (card->lines - 1)) && (map[child_i] == card->empty || map[child_i] == card->exit))
 	{
-		if (map[child_i] == exit)
+		if (map[child_i] == card->exit)
 			map[child_i] = 0 | EXIT;
 		map[child_i] = map[child_i] | TOP_PARENT;
 		ft_lstaddtoend(&queue, ft_lstnew(&child_i, sizeof(int)));
