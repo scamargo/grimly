@@ -6,15 +6,19 @@
 /*   By: scamargo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 13:43:43 by scamargo          #+#    #+#             */
-/*   Updated: 2018/01/19 16:42:16 by scamargo         ###   ########.fr       */
+/*   Updated: 2018/01/20 16:57:16 by scamargo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "grimly.h"
 
-#define BOTTOM_PARENT 0x01
-#define EXIT 0x04
+#define BOTTOM_PARENT 0x00
+#define RIGHT_PARENT 0x01
+#define TOP_PARENT 0x02
+#define LEFT_PARENT 0x03
+#define EXIT 0x08
+#define GET_PARENT(c) (c & 0x03)
 
 static void	find_children(char *map, int i, t_grim *card, t_list *queue)
 {
@@ -26,8 +30,6 @@ static void	find_children(char *map, int i, t_grim *card, t_list *queue)
 	empty = card->empty;
 	exit = card->exit;
 	columns = card->columns;
-	// look up
-	//ft_putendl("ADDING CHILD: ");
 	child_i = i - columns - 1;
 	if (i > columns && (map[child_i] == empty || map[child_i] == exit))
 	{
@@ -35,11 +37,23 @@ static void	find_children(char *map, int i, t_grim *card, t_list *queue)
 			map[child_i] = 0 | EXIT;
 		map[child_i] = map[child_i] | BOTTOM_PARENT;
 		ft_lstaddtoend(&queue, ft_lstnew(&child_i, sizeof(int)));
-		//ft_putendl("SUCCESS");
 	}
-	// look right
-	// look down
-	// look left
+	child_i = i - 1;
+	if (i > 0 && (map[child_i] == empty || map[child_i] == exit))
+	{
+		if (map[child_i] == exit)
+			map[child_i] = 0 | EXIT;
+		map[child_i] = map[child_i] | RIGHT_PARENT;
+		ft_lstaddtoend(&queue, ft_lstnew(&child_i, sizeof(int)));
+	}
+	child_i = i + columns + 1; 
+	/*if (i < 0 && (map[child_i] == empty || map[child_i] == exit)) // MAKE SURE THIS DOESN'T FAILE when on edge
+	{
+		if (map[child_i] == exit)
+			map[child_i] = 0 | EXIT;
+		map[child_i] = map[child_i] | TOP_PARENT;
+		ft_lstaddtoend(&queue, ft_lstnew(&child_i, sizeof(int)));
+	}*/
 }
 
 int		find_path(t_grim *card)
@@ -60,7 +74,6 @@ int		find_path(t_grim *card)
 		i = *(int*)queue->content;
 	}
 	steps = 0;
-	// TODO: don't write over exit
 	while (map[i] != card->entrance)
 	{
 		if (!(map[i] & EXIT))
@@ -68,8 +81,10 @@ int		find_path(t_grim *card)
 			steps++;
 			card->map[i] = card->path;
 		}
-		if (map[i] & BOTTOM_PARENT)
+		if (GET_PARENT(map[i]) == BOTTOM_PARENT)
 			i += card->columns + 1;
+		else if (GET_PARENT(map[i]) == RIGHT_PARENT)
+			i += 1;
 	}
 	ft_putstr(card->card);
 	return (steps);
