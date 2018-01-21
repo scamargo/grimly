@@ -6,7 +6,7 @@
 /*   By: scamargo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 16:10:05 by scamargo          #+#    #+#             */
-/*   Updated: 2018/01/19 16:12:05 by scamargo         ###   ########.fr       */
+/*   Updated: 2018/01/20 18:41:48 by scamargo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ int			map_is_valid(char *input, t_grim *card)
 	int exits;
 	int i;
 	
-	//TODO: store header in map
 	card->card = input;
 	while (*input++ != '\n')
 		;
