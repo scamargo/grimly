@@ -6,7 +6,7 @@
 /*   By: scamargo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 16:09:37 by scamargo          #+#    #+#             */
-/*   Updated: 2018/01/20 22:18:28 by scamargo         ###   ########.fr       */
+/*   Updated: 2018/01/21 10:46:49 by scamargo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,28 +33,31 @@ static int	no_repeat_symbols(t_grim *card)
 
 static int	parse_header_symbols(char *header, t_grim *card) //technically you want to check that you have printable characters
 {
+	int i;
 	if ((card->lines = ft_atoi(header)) <= 0)
 		return (0);
-	while (*header && *header++ != 'x')
+	i = 0;
+	while (header[i] && header[i++] != 'x')
 	 	;
-	if ((card->columns = ft_atoi(header++)) <= 0)
+	if ((card->columns = ft_atoi(&header[i++])) <= 0)
 		return (0);
 	if ((card->lines * card->columns) > 1000000000)
 		return (0);
-	while (*header >= '0' && *header <= '9')
-		header++;
-	if (!(card->full = *header++))
+	while (header[i] >= '0' && header[i] <= '9')
+		i++;
+	if (!(card->full = header[i++]))
 		return (0);
-	if (!(card->empty = *header++))
+	if (!(card->empty = header[i++]))
 		return (0);
-	if (!(card->path = *header++))
+	if (!(card->path = header[i++]))
 		return (0);
-	if (!(card->entrance = *header++))
+	if (!(card->entrance = header[i++]))
 		return (0);
-	if (!(card->exit = *header++))
+	if (!(card->exit = header[i++]))
 		return (0);
-	if (*header != '\n')
+	if (header[i++] != '\n')
 		return (0);
+	card->size = i + (card->columns + 1) * card->lines;
 	return (1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: scamargo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 13:43:43 by scamargo          #+#    #+#             */
-/*   Updated: 2018/01/20 18:47:52 by scamargo         ###   ########.fr       */
+/*   Updated: 2018/01/21 10:31:57 by scamargo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,25 @@
 #define EXIT 0x08
 #define GET_PARENT(c) (c & 0x07)
 
+static void ft_putmap(t_grim *card)
+{
+	write(1, card->card, card->size);
+}
+
 static void	find_children(char *map, int i, t_grim *card, t_list *queue)
 {
-	char empty;
+	//char empty;
 	char exit;
 	int	 columns;
 	int		lines;
 	int		child_i;
 
-	empty = card->empty;
+	//empty = card->empty;
 	exit = card->exit;
 	columns = card->columns;
 	lines = card->lines;
 	child_i = i - columns - 1;
-	if (i > columns && (map[child_i] == empty || map[child_i] == exit))
+	if (i > columns && (map[child_i] == card->empty || map[child_i] == exit))
 	{
 		if (map[child_i] == exit)
 			map[child_i] = 0 | EXIT;
@@ -41,7 +46,7 @@ static void	find_children(char *map, int i, t_grim *card, t_list *queue)
 		ft_lstaddtoend(&queue, ft_lstnew(&child_i, sizeof(int)));
 	}
 	child_i = i - 1;
-	if (i > 0 && (map[child_i] == empty || map[child_i] == exit))
+	if (i > 0 && (map[child_i] == card->empty || map[child_i] == exit))
 	{
 		if (map[child_i] == exit)
 			map[child_i] = 0 | EXIT;
@@ -49,7 +54,7 @@ static void	find_children(char *map, int i, t_grim *card, t_list *queue)
 		ft_lstaddtoend(&queue, ft_lstnew(&child_i, sizeof(int)));
 	}
 	child_i = i + 1;
-	if (i < (columns + 1) * lines && (map[child_i] == empty || map[child_i] == exit))
+	if (i < (columns + 1) * lines && (map[child_i] == card->empty || map[child_i] == exit))
 	{
 		if (map[child_i] == exit)
 			map[child_i] = 0 | EXIT;
@@ -57,7 +62,7 @@ static void	find_children(char *map, int i, t_grim *card, t_list *queue)
 		ft_lstaddtoend(&queue, ft_lstnew(&child_i, sizeof(int)));
 	}
 	child_i = i + columns + 1;
-	if (i < ((columns + 1) * (lines - 1)) && (map[child_i] == empty || map[child_i] == exit))
+	if (i < ((columns + 1) * (lines - 1)) && (map[child_i] == card->empty || map[child_i] == exit))
 	{
 		if (map[child_i] == exit)
 			map[child_i] = 0 | EXIT;
@@ -100,6 +105,6 @@ int		find_path(t_grim *card)
 		else if (GET_PARENT(map[i]) == LEFT_PARENT)
 			i -= 1;
 	}
-	ft_putstr(card->card);
+	ft_putmap(card);
 	return (steps);
 }

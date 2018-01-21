@@ -6,7 +6,7 @@
 /*   By: scamargo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/17 17:31:50 by scamargo          #+#    #+#             */
-/*   Updated: 2018/01/20 21:20:48 by scamargo         ###   ########.fr       */
+/*   Updated: 2018/01/21 10:30:45 by scamargo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ typedef struct	s_grim
 	int		lines;
 	int		columns;
 	char	entrance;
+	int		size;
 	char	exit;
 	char	path;
 	char	empty;
